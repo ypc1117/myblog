@@ -49,7 +49,16 @@
             </el-form>\
 	  </div>\
     ',
-    props: ['title', 'content']
+    props: ['title', 'content'],
+    data(){
+      return {
+        "blog_comment": {
+          "nickname": "",
+          "email": "",
+          "comment":""
+        },
+      }
+    }
   });
 
   var v = new Vue({
