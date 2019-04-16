@@ -15,7 +15,6 @@
           v-bind:key="todo.id"
           v-bind:title="todo.title"
 	  v-bind:content="todo.content"
-	  v-bind:blog_comment="todo.blog_comment"
         ></todo-item>
     </template>
   </div>
@@ -28,7 +27,7 @@
 <script>
   Vue.component('todo-item', {
     template: '\
-	  <div style="background-color:#FF0000">\
+	  <div style="background-color:#FFFFFF">\
 	    {{ title }}<br>\
 	    {{ content }}\
 	    <i class="el-icon-info"><br></i><br>\
@@ -65,11 +64,6 @@
     el: "#app",
     data: function(){
 	    return {
-	      "blog_comment": {
-		  "nickname": "",
-		  "email": "",
-		  "comment":""
-	       },
 	       "todos": []
 	    }  
           },
