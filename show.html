@@ -28,27 +28,27 @@
   Vue.component('todo-item', {
     template: '\
 	  <div style="background-color:#FFFFFF">\
-	    {{ title }}<br>\
-	    {{ content }}\
+	    <span>title: {{ title }}</span><br>\
+	    <span>content: {{ content }}</span>\
 	    <i class="el-icon-info"><br></i><br>\
 	    <div style="height:10px;background-color:#FFFFFF"></div>\
-            <el-form :model="blog_comment" :rules="rules" ref="blog_comment" label-width="120px" size="mini">\
+            <el-form :model="blog_comment" :rules="rules" ref="blog_comment" label-width="80px" size="mini">\
               <el-form-item label="nickname" prop="nickname">\
-                <el-input  v-model="blog_comment.nickname"></el-input>\
+                <el-input v-model="blog_comment.nickname"></el-input>\
               </el-form-item>\
-	      <el-form-item lable="email" prop="email">\
-	        <el-input v-model="blog_comment.email" prop="email"></el-input>\
+	      <el-form-item label="email" prop="email">\
+	        <el-input v-model="blog_comment.email"></el-input>\
 	      </el-form-item>\
               <el-form-item label="comment" prop="comment">\
                 <el-input  type="textarea" placeholder="Please input your blog comment" v-model="blog_comment.comment"></el-input>\
               </el-form-item>\
               <el-form-item>\
-                <el-button type="primary" v-model="submit">submit</el-button>\
+                <el-button type="primary" v-model="submit" @click="submit()">submit</el-button>\
               </el-form-item>\
             </el-form>\
 	  </div>\
     ',
-    props: ['title', 'content'],
+    props: ["title", "content"],
     data(){
       return {
         "blog_comment": {
@@ -56,6 +56,35 @@
           "email": "",
           "comment":""
         },
+        rules: {
+          nickname: [
+	    {required: true, message: "the nickname of comment can not be none", trigger: "blur"},
+	    {min: 1, max: 20, message: "lengths only equal 20 chars at most"}
+	  ],
+          email: [
+	    {required: true, message: "the nickname of comment can not be none", trigger: "blur"},
+	    {min: 1, max: 20, message: "lengths only equal 20 chars at most", trigger: "blur"},
+	    {type: "email", message:"input vaild email address", trigger:"blur"}
+	  ],
+          comment: [
+            {required: true, message: "the comment of comment can not be none", trigger: "blur"},
+            {min: 1, max: 400, message: "lengths only equal 400 chars at most"}
+          ]
+        }
+      }
+    },
+    methods: {
+      submit(){
+	this.$refs['blog_comment'].validate((valid) =>{
+                if(valid){
+	            var nickname = this.blog_comment.nickname;
+		    var comment = this.blog_comment.comment;
+		    var email = this.blog_comment.comment;
+	            console.log(this.$refs);}
+		else{
+		    console.log("error submit!!!");
+		}
+        });
       }
     }
   });
