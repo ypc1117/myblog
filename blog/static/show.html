@@ -15,6 +15,7 @@
           v-bind:key="todo.id"
           v-bind:title="todo.title"
 	  v-bind:content="todo.content"
+	  v-bind:blog_id="todo.blog_id"
         ></todo-item>
     </template>
   </div>
@@ -48,7 +49,7 @@
             </el-form>\
 	  </div>\
     ',
-    props: ["title", "content"],
+    props: ["blog_id", "title", "content"],
     data(){
       return {
         "blog_comment": {
@@ -77,10 +78,26 @@
       submit(){
 	this.$refs['blog_comment'].validate((valid) =>{
                 if(valid){
+		    var blog_id = this.blog_id
 	            var nickname = this.blog_comment.nickname;
 		    var comment = this.blog_comment.comment;
 		    var email = this.blog_comment.comment;
-	            console.log(this.$refs);}
+	            console.log(this.$refs);
+		    var form_data = {
+			"blog_id": blog_id,
+			"nickname": nickname,
+		        "email": email,
+			"comment": comment
+		    };
+                    this.$http.post(
+	                "http://192.168.1.105:8080/blog/comment", form_data, {emulateJSON:true}
+		    ).then(function(res){
+			alert("submit successfully!!!!")
+                        console.log(res.body);    
+                    },function(res){
+                        console.log(res.status);
+                    });
+		}
 		else{
 		    console.log("error submit!!!");
 		}
@@ -98,19 +115,20 @@
           },
     methods: {
         show_my_blogs: function(){
-	    this.$http.jsonp("http://localhost:8080/statistic").then(function(jsondata){
+	    this.$http.jsonp("http://localhost:8080/blog/show").then(function(jsondata){
 	        blog_form_body = jsondata.body;
 	        console.log(JSON.stringify(blog_form_body));
 		blog_form_data = []
 		for(var i=0;i<blog_form_body.length;i++){
 		    blog_form_data.push({
-		        "title": blog_form_body[i].ip, 
-			"content": blog_form_body[i].count
+			"blog_id": blog_form_body[i].id,
+		        "title": blog_form_body[i].blog.title, 
+			"content": blog_form_body[i].blog.content
 		    });
 		}
 		this.todos = blog_form_data;
 	      },function(res){
-	        console.log("error");
+	        console.log(res);
 		alert("Error: "+ res);
 	      });
         }
