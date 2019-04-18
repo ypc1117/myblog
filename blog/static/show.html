@@ -11,13 +11,24 @@
     <template>
         <todo-item
           is="todo-item"
-          v-for="(todo, index) in todos"
-          v-bind:key="todo.id"
-          v-bind:title="todo.title"
-	  v-bind:content="todo.content"
-	  v-bind:blog_id="todo.blog_id"
+          v-for="(blog, index) in blogs"
+          v-bind:key="blog.id"
+          v-bind:title="blog.title"
+	  v-bind:content="blog.content"
+	  v-bind:blog_id="blog.blog_id"
+	  v-bind:comments="blog.comments"
         ></todo-item>
     </template>
+    <div class="block">
+      <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-size="pageSize"
+          layout="total, prev, pager, next, jumper"
+          :total="pageTotal">
+      </el-pagination>
+    </div>
   </div>
 </body>
 <!-- import Vue before Element -->
@@ -47,9 +58,15 @@
                 <el-button type="primary" v-model="submit" @click="submit()">submit</el-button>\
               </el-form-item>\
             </el-form>\
+	    <div v-for="comment in comments" :key="comment.id">\
+	      <span>{{comment.nickname}}</span><br>\
+	      <span>{{comment.comment}}</span><br>\
+	      <span>{{comment.created_time}}</span><br>\
+	      <div style="height:10px;background-color:#FFFFFF"></div>\
+	    </div>\
 	  </div>\
     ',
-    props: ["blog_id", "title", "content"],
+    props: ["blog_id", "title", "content", "comments"],
     data(){
       return {
         "blog_comment": {
@@ -92,11 +109,17 @@
                     this.$http.post(
 	                "http://192.168.1.105:8080/blog/comment", form_data, {emulateJSON:true}
 		    ).then(function(res){
-			alert("submit successfully!!!!")
+			console.log("submit successfully!!!!");
                         console.log(res.body);    
                     },function(res){
                         console.log(res.status);
                     });
+	            this.$alert("submit successfully", "submit", {
+		        confirmButtonText: '',
+			type: 'success',
+			callback: action =>{},
+		    });
+		    location.reload();
 		}
 		else{
 		    console.log("error submit!!!");
@@ -105,33 +128,46 @@
       }
     }
   });
-
+  
   var v = new Vue({
     el: "#app",
     data: function(){
 	    return {
-	       "todos": []
+	       currentPage: 1,
+	       pageSize: 1,
+	       pageTotal: 5,
+	       blogs: []
 	    }  
           },
     methods: {
         show_my_blogs: function(){
+            console.log(this.currentPage);
 	    this.$http.jsonp("http://localhost:8080/blog/show").then(function(jsondata){
 	        blog_form_body = jsondata.body;
-	        console.log(JSON.stringify(blog_form_body));
 		blog_form_data = []
-		for(var i=0;i<blog_form_body.length;i++){
+		for(var i=0; i<blog_form_body.length; i++){
 		    blog_form_data.push({
 			"blog_id": blog_form_body[i].id,
 		        "title": blog_form_body[i].blog.title, 
-			"content": blog_form_body[i].blog.content
+			"content": blog_form_body[i].blog.content,
+			"comments": blog_form_body[i].comments
 		    });
 		}
-		this.todos = blog_form_data;
+		this.pageTotal = blog_form_body.length;
+		this.total_blogs = blog_form_data;
+		this.blogs = [this.total_blogs[this.currentPage-1]];
 	      },function(res){
 	        console.log(res);
 		alert("Error: "+ res);
 	      });
-        }
+        },
+	handleCurrentChange: function(val){
+	    this.currentPage = val;
+	    this.blogs = [this.total_blogs[val-1]];
+	},
+	handleSizeChange: function(val){
+	    this.pageSize = val;
+	}
     }
   });
   v.show_my_blogs();

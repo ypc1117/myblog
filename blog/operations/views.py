@@ -31,7 +31,7 @@ def show_blog_detail(request):
             blogs.append({
                 "id": blog.id,
                 "blog":blog_detail,
-                "comment":blog_comments
+                "comments":blog_comments
             })
     return HttpResponse(('%s(%s)') % (callback, json.dumps(blogs, indent=4)))
     #return HttpResponse(json.dumps(blogs, indent=4), content_type="application/json")
@@ -43,8 +43,8 @@ def post_blog(request):
         print("your http method is get!!!")
     else:
         print("your http method is post!!!")
+        title = request.POST.get('title')
         content = request.POST.get('content')
-        print(title, content)
         blog = Blog.objects.create(title=title, content=content)
         blog.save()
     return HttpResponse("Hello, you may need to come on for yourself")
