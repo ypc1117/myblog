@@ -24,7 +24,7 @@ def show_blog_detail(request):
             blog_comments = []
             for blog_comment in BlogComment.objects.all().filter(blog_id=blog.id):
                 comment_detail = {}
-                comment_detail['nickname'] = blog_comment.comment
+                comment_detail['nickname'] = blog_comment.nickname
                 comment_detail['comment'] = blog_comment.comment
                 comment_detail['created_time'] = blog_comment.created_time.strftime("%Y-%m-%d-%H")
                 blog_comments.append(comment_detail)
@@ -33,8 +33,7 @@ def show_blog_detail(request):
                 "blog":blog_detail,
                 "comments":blog_comments
             })
-    return HttpResponse(('%s(%s)') % (callback, json.dumps(blogs, indent=4)))
-    #return HttpResponse(json.dumps(blogs, indent=4), content_type="application/json")
+        return HttpResponse(('%s(%s)') % (callback, json.dumps(blogs, indent=4)))
 
 
 def post_blog(request):
