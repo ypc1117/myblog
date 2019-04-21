@@ -1,7 +1,6 @@
 <template>
   <div class="block">
     <blog
-      is="todo-item"
       v-for="(blog, index) in blogs"
       v-bind:key="blog.id"
       v-bind:title="blog.title"
@@ -37,10 +36,10 @@ const myblog = {
   },
   methods: {
     show_my_blogs: function() {
-      this.$http.get("/api/show").then(
+      this.$http.jsonp("http://localhost:8080/blog/show").then(
         function(jsondata) {
-          blog_form_body = jsondata.body;
-          blog_form_data = [];
+          let blog_form_body = jsondata.body;
+          let blog_form_data = [];
           console.log(blog_form_body[0]);
           for (var i = 0; i < blog_form_body.length; i++) {
             blog_form_data.push({

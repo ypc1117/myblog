@@ -47,7 +47,7 @@
 		            "content": this.blog_form.content
 		    };
                     this.$http.post(
-	                "http://192.168.1.105:8080/blog/upload", form_data, {emulateJSON:true}
+	              "http://127.0.0.1:8080/blog/upload", form_data, {emulateJSON:true}
 		    ).then(function(res){
                         console.log(res.body);    
                     },function(res){

@@ -802,9 +802,9 @@
 
 <script>
 　　function jumpurl(){
-　　  window.location.href = 'http://127.0.0.1:8080/blog/show';
+　　  window.location.href = 'http://127.0.0.1:8081/#/blog/show';
 　　}
-　　setTimeout(jumpurl, 10000); 
+　　setTimeout(jumpurl, 20000); 
     export default {
       name: 'Welcome',
       data () {
