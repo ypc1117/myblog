@@ -35,6 +35,9 @@ def show_blog_detail(request):
             })
         return HttpResponse(('%s(%s)') % (callback, json.dumps(blogs, indent=4)))
 
+def show_blog_html(request):
+    return render(request, 'show.html')
+
 
 def post_blog(request):
     form = request.body

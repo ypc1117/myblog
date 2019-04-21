@@ -74,12 +74,12 @@
             </el-form>\
             <div style="height:20px;background-color:#FFFFFF"></div>\
 	    <div style="padding:20px 20px 20px 20px;border:1px solid #DCDFE6">\
-	      <span>目前评论共有{{getCommentSizes()}}条</span>\
+	      <span>目前评论共有{{ getCommentSizes()}}条</span>\
 	    </div>\
 	    <div style="height:20px;background-color:#FFFFFF"></div>\
 	    <div v-for="comment in comments" :key="comment.id" style="padding:20px 20px 20px 20px;border:1px solid #DCDFE6">\
 	      <div style="display:flex;flex-wrap:nowrap;align:center">\
-	        <img src="./programmer.png" style="width:70px;height:70px;" >\
+	        <img src="../static/images/programmer.png" style="width:70px;height:70px;" >\
 	        <div>\
 	          <span style="display:inline-block;color:#909399;margin:3px 30px 2px 30px;">{{comment.nickname}}</span><br>\
 	          <span style="display:inline-block;color:#909399;margin:3px 30px 2px 30px;">{{comment.created_time}}</span><br>\
@@ -171,7 +171,7 @@
 	    this.$http.jsonp("http://localhost:8080/blog/show").then(function(jsondata){
 	        blog_form_body = jsondata.body;
 		blog_form_data = []
-		console.log(blog_form_body[0].comments);
+		console.log(blog_form_body[0]);
 		for(var i=0; i<blog_form_body.length; i++){
 		    blog_form_data.push({
 			"blog_id": blog_form_body[i].id,
